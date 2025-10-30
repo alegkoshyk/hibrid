@@ -148,8 +148,13 @@ class Hybrid_Auto_Calc_API {
         $pension_rate = floatval( $tariffs['pension_fund_rate'] ?? 5 );
         $pension_sum = $cost_uah * ( $pension_rate / 100 );
         
+        // ========== Транспортний податок ==========
+        $now_year = intval( date( 'Y' ) );
+        $age_years = max( 0, $now_year - $year );
+        $transport_sum = ( $age_years < 5 && $cost_uah > 2600000 ) ? 25000 : 0;
+
         // ========== ВСЬОГО ==========
-        $total_uah = $duty + $excise + $vat + $pension_sum;
+        $total_uah = $duty + $excise + $vat + $pension_sum + $transport_sum;
         $total_original = $total_uah / $exchange_rate;
         
         // Prepare response
@@ -182,6 +187,12 @@ class Hybrid_Auto_Calc_API {
                     'rate' => $pension_rate,
                     'base' => $cost_uah,
                     'sum_ua' => $pension_sum,
+                ),
+                'transport' => array(
+                    'name_ua' => 'Транспортний податок',
+                    'rate' => null,
+                    'base' => null,
+                    'sum_ua' => $transport_sum,
                 ),
             ),
             'additional_fees' => array(),

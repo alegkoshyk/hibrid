@@ -185,13 +185,14 @@
         $('#resultCost').text(costUa + ' грн');
         
         // Parse payments from new structure
-        let duty = 0, vat = 0, excise = 0, pension = 0;
+        let duty = 0, vat = 0, excise = 0, pension = 0, transport = 0;
         
         if (data.payments && typeof data.payments === 'object') {
             duty = parseFloat(data.payments.duty?.sum_ua || 0);
             vat = parseFloat(data.payments.vat?.sum_ua || 0);
             excise = parseFloat(data.payments.excise?.sum_ua || 0);
             pension = parseFloat(data.payments.pension_fund?.sum_ua || 0);
+            transport = parseFloat(data.payments.transport?.sum_ua || 0);
         }
         
         $('#resultDuty').text(duty.toFixed(2) + ' грн');
@@ -205,6 +206,14 @@
               + '</div>').insertBefore($('.result-row.result-total'));
         }
         $('#resultPension').text(pension.toFixed(2) + ' грн');
+        // Ensure Transport row exists and fill it
+        if ($('.result-row.result-transport').length === 0) {
+            $('<div class="result-row result-transport">'
+              + '<span>Транспортний податок:</span>'
+              + '<strong id="resultTransport">0.00 грн</strong>'
+              + '</div>').insertBefore($('.result-row.result-total'));
+        }
+        $('#resultTransport').text(transport.toFixed(2) + ' грн');
         
         // Total
         const totalUa = parseFloat(data.payments_ua_sum || 0).toFixed(2);

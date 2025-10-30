@@ -123,7 +123,7 @@
                         <?php foreach ( $enabled_currencies as $curr ) : 
                             $code = $curr['code'] ?? '';
                             $name = $curr['name_ua'] ?? '';
-                            $rate = $curr['value'] ?? 0;
+                            $rate = isset( $curr['value'] ) ? $curr['value'] : ( $curr['rate'] ?? 0 );
                         ?>
                             <option value="<?php echo esc_attr( $code ); ?>" data-rate="<?php echo esc_attr( $rate ); ?>">
                                 <?php echo esc_html( $name ); ?> (<?php echo esc_html( $code ); ?>)
