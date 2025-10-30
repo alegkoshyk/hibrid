@@ -20,9 +20,12 @@ class Hybrid_Auto_Calc_Frontend {
             return $c['enabled'] ?? false;
         } );
         
-        // Filter enabled currencies
-        $enabled_currencies = array_filter( $nbu_currencies, function( $c ) {
-            return $c['enabled'] ?? false;
+        // Filter enabled currencies (exclude metals like gold/silver/etc.)
+        $exclude_codes = array( 'XAU', 'XAG', 'XPT', 'XPD' );
+        $enabled_currencies = array_filter( $nbu_currencies, function( $c ) use ( $exclude_codes ) {
+            if ( ! ( $c['enabled'] ?? false ) ) return false;
+            $code = strtoupper( $c['code'] ?? '' );
+            return $code && ! in_array( $code, $exclude_codes, true );
         } );
         
         // Always include UAH with rate 1

@@ -26,10 +26,15 @@ class Hybrid_Auto_Calc_API {
         
         // Format currencies
         $currencies = array();
+        $exclude_codes = array( 'XAU', 'XAG', 'XPT', 'XPD' ); // метали: золото, срібло, платина, паладій
         foreach ( $data as $item ) {
             if ( isset( $item['cc'] ) && isset( $item['rate'] ) ) {
+                $code = strtoupper( $item['cc'] );
+                if ( in_array( $code, $exclude_codes, true ) ) {
+                    continue; // пропускаємо метали
+                }
                 $currencies[] = array(
-                    'code' => $item['cc'],
+                    'code' => $code,
                     'name_ua' => $item['txt'] ?? '',
                     'value' => $item['rate'],
                 );

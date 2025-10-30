@@ -13,6 +13,9 @@
         }
     };
     
+    let currentRate = 1;
+    let currentCode = 'UAH';
+
     $(document).ready(function() {
         log('Initializing calculator');
         
@@ -72,11 +75,41 @@
         const code = selectedOption.val();
         const text = selectedOption.text();
         
-        // Show rate only if not UAH
-        if (code === 'UAH') {
+        currentCode = code || 'UAH';
+
+        // Show/fetch rate only if not UAH
+        if (currentCode === 'UAH') {
+            currentRate = 1;
             $('#currencyRate').text('-');
         } else {
-            $('#currencyRate').text(rate ? parseFloat(rate).toFixed(4) : '-');
+            // If we already have data-rate, use it immediately
+            if (rate) {
+                currentRate = parseFloat(rate);
+                $('#currencyRate').text(currentRate.toFixed(4));
+            } else {
+                // Fetch fresh from server to be sure
+                $.ajax({
+                    type: 'POST',
+                    url: hybridAutoCalc.ajaxUrl,
+                    data: {
+                        action: 'hybrid_auto_calc_get_currency',
+                        _ajax_nonce: hybridAutoCalc.nonce,
+                        currency_code: currentCode
+                    },
+                    dataType: 'json',
+                    success: function(resp){
+                        if (resp.success && resp.data && resp.data.value) {
+                            currentRate = parseFloat(resp.data.value);
+                            // cache into option for subsequent reads
+                            selectedOption.data('rate', currentRate);
+                            $('#currencyRate').text(currentRate.toFixed(4));
+                        } else {
+                            $('#currencyRate').text('-');
+                        }
+                    },
+                    error: function(){ $('#currencyRate').text('-'); }
+                });
+            }
         }
         $('#currencySymbol').text(code);
         
@@ -169,10 +202,21 @@
         const totalUa = parseFloat(data.payments_ua_sum || 0).toFixed(2);
         $('#resultTotal').text(totalUa + ' грн');
         
-        // Currency conversion
+        // Currency conversion + show selected rate
         const currencyCode = $('#currency').val();
         const totalCurrency = parseFloat(data.payments_sum || 0).toFixed(2);
         $('#resultTotalCurrency').text(currencyCode + ' ' + totalCurrency);
+        // Inject rate row (if not present)
+        const $resultCurrencyBox = $('.result-currency');
+        if ($resultCurrencyBox.find('.result-rate-row').length === 0) {
+            $('<div class="result-row result-rate-row">'
+              + '<span>Курс ('+currencyCode+'):</span>'
+              + '<strong>'+ (currencyCode==='UAH' ? '-' : (currentRate ? currentRate.toFixed(4) : '-')) +'</strong>'
+              + '</div>').insertAfter($resultCurrencyBox.find('.result-currency-title'));
+        } else {
+            $resultCurrencyBox.find('.result-rate-row strong').text(currencyCode==='UAH' ? '-' : (currentRate ? currentRate.toFixed(4) : '-'));
+            $resultCurrencyBox.find('.result-rate-row span').text('Курс ('+currencyCode+'):');
+        }
         
         // Show result box
         $resultBox.addClass('show');

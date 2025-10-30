@@ -105,10 +105,10 @@
 }
 
 .notice {
-    border-left: 4px solid #ffc107;
+    border-left: 4px solid #2563eb; /* blue */
     padding: 12px;
     margin: 20px 0;
-    background: #fff;
+    background: #eef2ff; /* subtle indigo */
 }
 
 .notice.notice-success {

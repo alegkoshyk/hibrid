@@ -29,9 +29,9 @@
 
 .api-status.loading {
     display: block;
-    background: #fef3c7;
-    border: 1px solid #fcd34d;
-    color: #92400e;
+    background: #eff6ff; /* light blue */
+    border: 1px solid #93c5fd; /* blue-300 */
+    color: #1e3a8a; /* blue-900 */
 }
 
 .api-status.success {
