@@ -48,6 +48,9 @@ class Hybrid_Auto_Calc_API {
      * Get specific currency rate
      */
     public function get_currency( $code ) {
+        // Normalize input code to uppercase to match stored NBU codes
+        $code = strtoupper( trim( (string) $code ) );
+
         // Handle UAH locally
         if ( $code === 'UAH' ) {
             return array(
@@ -68,7 +71,7 @@ class Hybrid_Auto_Calc_API {
         }
         
         foreach ( $currencies as $currency ) {
-            if ( isset( $currency['code'] ) && $currency['code'] === $code ) {
+            if ( isset( $currency['code'] ) && strtoupper( $currency['code'] ) === $code ) {
                 return $currency;
             }
         }

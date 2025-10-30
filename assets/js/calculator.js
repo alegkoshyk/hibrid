@@ -111,7 +111,7 @@
                 });
             }
         }
-        $('#currencySymbol').text(code);
+        $('#currencySymbol').text(currentCode);
         
         log('Currency updated', {
             code: code,
