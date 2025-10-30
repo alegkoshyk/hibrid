@@ -245,8 +245,7 @@
         const exciseBase = parseFloat(data && data.payments && data.payments.excise && typeof data.payments.excise.base !== 'undefined' ? data.payments.excise.base : 0);
         const exciseSum = parseFloat(data && data.payments && data.payments.excise && data.payments.excise.sum_ua ? data.payments.excise.sum_ua : 0);
         const vatSum = parseFloat(data && data.payments && data.payments.vat && data.payments.vat.sum_ua ? data.payments.vat.sum_ua : 0);
-        // pension already parsed above
-        const transport = 0; // якщо додасте на бекенді — підставиться з data
+        // pension and transport already parsed above
         const exch = parseFloat(data.exchange_rate || currentRate || 0);
         const costUaNum = parseFloat(costUa || 0);
         const dutyLine = `Мито = ${costUaNum.toLocaleString()} × ${dutyRate}% = ${dutySum.toFixed(2)} грн`;
