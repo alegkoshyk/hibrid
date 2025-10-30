@@ -4,7 +4,7 @@
     'use strict';
     
     const log = function(message, data = null) {
-        if (hybridAutoCalc.isLogging) {
+        if (window.hybridAutoCalc && hybridAutoCalc.isLogging) {
             if (data) {
                 console.log('[HybridAutoCal] ' + message, data);
             } else {
@@ -187,30 +187,31 @@
         // Parse payments from new structure
         let duty = 0, vat = 0, excise = 0, pension = 0, transport = 0;
         
-        if (data.payments && typeof data.payments === 'object') {
-            duty = parseFloat(data.payments.duty?.sum_ua || 0);
-            vat = parseFloat(data.payments.vat?.sum_ua || 0);
-            excise = parseFloat(data.payments.excise?.sum_ua || 0);
-            pension = parseFloat(data.payments.pension_fund?.sum_ua || 0);
-            transport = parseFloat(data.payments.transport?.sum_ua || 0);
+        if (data && data.payments && typeof data.payments === 'object') {
+            duty = parseFloat((data.payments.duty && data.payments.duty.sum_ua) ? data.payments.duty.sum_ua : 0);
+            vat = parseFloat((data.payments.vat && data.payments.vat.sum_ua) ? data.payments.vat.sum_ua : 0);
+            excise = parseFloat((data.payments.excise && data.payments.excise.sum_ua) ? data.payments.excise.sum_ua : 0);
+            pension = parseFloat((data.payments.pension_fund && data.payments.pension_fund.sum_ua) ? data.payments.pension_fund.sum_ua : 0);
+            transport = parseFloat((data.payments.transport && data.payments.transport.sum_ua) ? data.payments.transport.sum_ua : 0);
         }
         
         $('#resultDuty').text(duty.toFixed(2) + ' грн');
         $('#resultVAT').text(vat.toFixed(2) + ' грн');
         $('#resultExcise').text(excise.toFixed(2) + ' грн');
-        // Ensure Pension row exists and fill it (recreate to be safe)
-        $('.result-row.result-pension').remove();
-        const $totalRow = $('.result-row.result-total');
+        // Ensure Pension row exists and fill it (recreate to be safe, scoped to #resultBox)
+        const $box = $('#resultBox');
+        $box.find('.result-row.result-pension').remove();
+        const $totalRow = $box.find('.result-row.result-total');
         $('<div class="result-row result-pension">'
           + '<span>Пенсійний фонд:</span>'
           + '<strong id="resultPension">'+pension.toFixed(2)+' грн</strong>'
-          + '</div>').insertBefore($totalRow.length ? $totalRow : $('#resultBox'));
-        // Ensure Transport row exists and fill it (recreate to be safe)
-        $('.result-row.result-transport').remove();
+          + '</div>').insertBefore($totalRow.length ? $totalRow : $box);
+        // Ensure Transport row exists and fill it (recreate to be safe, scoped to #resultBox)
+        $box.find('.result-row.result-transport').remove();
         $('<div class="result-row result-transport">'
           + '<span>Транспортний податок:</span>'
           + '<strong id="resultTransport">'+transport.toFixed(2)+' грн</strong>'
-          + '</div>').insertBefore($('.result-row.result-total'));
+          + '</div>').insertBefore($box.find('.result-row.result-total'));
         
         // Total
         const totalUa = parseFloat(data.payments_ua_sum || 0).toFixed(2);
@@ -221,7 +222,7 @@
         const totalCurrency = parseFloat(data.payments_sum || 0).toFixed(2);
         $('#resultTotalCurrency').text(currencyCode + ' ' + totalCurrency);
         // Inject currency details (recreate to be safe)
-        const $resultCurrencyBox = $('.result-currency');
+        const $resultCurrencyBox = $box.find('.result-currency');
         // Cost in selected currency
         const costOriginal = (parseFloat(data.cost_uah || 0) && parseFloat(data.exchange_rate || 0))
             ? (parseFloat(data.cost_uah) / parseFloat(data.exchange_rate))
@@ -238,12 +239,12 @@
           + '</div>')
           .insertAfter($resultCurrencyBox.find('.result-currency-title'));
         // ===== Формула розрахунку (пояснення) =====
-        const dutyRate = (data.payments && data.payments.duty && typeof data.payments.duty.rate !== 'undefined') ? data.payments.duty.rate : 10;
-        const vatRate = (data.payments && data.payments.vat && typeof data.payments.vat.rate !== 'undefined') ? data.payments.vat.rate : 20;
-        const dutySum = parseFloat(data.payments && data.payments.duty ? (data.payments.duty.sum_ua || 0) : 0);
-        const exciseBase = parseFloat(data.payments && data.payments.excise ? (data.payments.excise.base || 0) : 0);
-        const exciseSum = parseFloat(data.payments && data.payments.excise ? (data.payments.excise.sum_ua || 0) : 0);
-        const vatSum = parseFloat(data.payments && data.payments.vat ? (data.payments.vat.sum_ua || 0) : 0);
+        const dutyRate = (data && data.payments && data.payments.duty && typeof data.payments.duty.rate !== 'undefined') ? data.payments.duty.rate : 10;
+        const vatRate = (data && data.payments && data.payments.vat && typeof data.payments.vat.rate !== 'undefined') ? data.payments.vat.rate : 20;
+        const dutySum = parseFloat(data && data.payments && data.payments.duty && data.payments.duty.sum_ua ? data.payments.duty.sum_ua : 0);
+        const exciseBase = parseFloat(data && data.payments && data.payments.excise && typeof data.payments.excise.base !== 'undefined' ? data.payments.excise.base : 0);
+        const exciseSum = parseFloat(data && data.payments && data.payments.excise && data.payments.excise.sum_ua ? data.payments.excise.sum_ua : 0);
+        const vatSum = parseFloat(data && data.payments && data.payments.vat && data.payments.vat.sum_ua ? data.payments.vat.sum_ua : 0);
         // pension already parsed above
         const transport = 0; // якщо додасте на бекенді — підставиться з data
         const exch = parseFloat(data.exchange_rate || currentRate || 0);
@@ -263,8 +264,8 @@
           + '</div>'
         );
 
-        $('#calcFormulaBlock').remove();
-        $resultBox.append(formulaBlock);
+        $box.find('#calcFormulaBlock').remove();
+        $box.append(formulaBlock);
         
         // Show result box
         $resultBox.addClass('show');
