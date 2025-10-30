@@ -1,0 +1,24 @@
+{
+  "name": "hybrid-auto-customs-calculator",
+  "version": "1.0.0",
+  "description": "Калькулятор митних платежів для гібридних автомобілів з інтеграцією курсів НБУ",
+  "main": "hybrid-auto-customs-calculator.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "customs",
+    "calculator",
+    "hybrid",
+    "auto",
+    "nbu",
+    "ukraine"
+  ],
+  "author": "Your Name",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

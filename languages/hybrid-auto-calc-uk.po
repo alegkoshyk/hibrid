@@ -1,0 +1,221 @@
+# Hybrid Auto Customs Calculator - Ukrainian Translation
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Hybrid Auto Customs Calculator\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: uk_UA\n"
+
+# Plugin translations
+msgid "Hybrid Auto Customs Calculator"
+msgstr "Калькулятор митних платежів на гібридні автомобілі"
+
+msgid "Settings"
+msgstr "Налаштування"
+
+msgid "Countries"
+msgstr "Країни"
+
+msgid "Currencies"
+msgstr "Валюти"
+
+msgid "Welcome"
+msgstr "Ласкаво просимо"
+
+msgid "Quick Start"
+msgstr "Швидкий старт"
+
+msgid "Configure API settings"
+msgstr "Налаштуйте параметри API"
+
+msgid "Add countries with coefficients"
+msgstr "Додайте країни з коефіцієнтами"
+
+msgid "Enable currencies"
+msgstr "Увімкніть валюти"
+
+msgid "Add shortcode to page"
+msgstr "Додайте шорткод на сторінку"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Currencies loaded: %d items"
+msgstr "Валюти завантажено: %d позицій"
+
+msgid "Currencies not loaded. Try syncing from Settings."
+msgstr "Валюти не завантажено. Спробуйте синхронізацію з Налаштувань."
+
+msgid "API Key"
+msgstr "API Ключ"
+
+msgid "Your MD Office API key"
+msgstr "Ваш API ключ MD Office"
+
+msgid "API Base URL"
+msgstr "Базовий URL API"
+
+msgid "Enable Logging"
+msgstr "Увімкніть логування"
+
+msgid "Log API requests to browser console"
+msgstr "Логувати запити API до консолі браузера"
+
+msgid "Sync NBU Currencies"
+msgstr "Синхронізуватиме валюти НБУ"
+
+msgid "Update exchange rates from National Bank of Ukraine"
+msgstr "Оновити курси обміну від Національного банку України"
+
+msgid "Sync Currencies Now"
+msgstr "Синхронізувати валюти зараз"
+
+msgid "Currencies synced successfully!"
+msgstr "Валюти успішно синхронізовані!"
+
+msgid "Countries Management"
+msgstr "Управління країнами"
+
+msgid "Enabled"
+msgstr "Увімкнено"
+
+msgid "Country Code"
+msgstr "Код країни"
+
+msgid "Country Name"
+msgstr "Назва країни"
+
+msgid "Coefficient"
+msgstr "Коефіцієнт"
+
+msgid "Save Countries"
+msgstr "Зберегти країни"
+
+msgid "Countries saved successfully!"
+msgstr "Країни успішно збережено!"
+
+msgid "Currencies Management"
+msgstr "Управління валютами"
+
+msgid "Select which currencies from NBU to show in calculator"
+msgstr "Виберіть які валюти з НБУ показувати в калькуляторі"
+
+msgid "Code"
+msgstr "Код"
+
+msgid "Name"
+msgstr "Назва"
+
+msgid "Exchange Rate"
+msgstr "Курс обміну"
+
+msgid "Save Currencies"
+msgstr "Зберегти валюти"
+
+msgid "Currencies saved successfully!"
+msgstr "Валюти успішно збережено!"
+
+# Calculator form
+msgid "Тип особи:"
+msgstr "Тип особи:"
+
+msgid "Фізична особа"
+msgstr "Фізична особа"
+
+msgid "Юридична особа"
+msgstr "Юридична особа"
+
+msgid "Тип двигуна:"
+msgstr "Тип двигуна:"
+
+msgid "Гібрид (бензин)"
+msgstr "Гібрид (бензин)"
+
+msgid "Гібрид (дизель)"
+msgstr "Гібрид (дизель)"
+
+msgid "Здатний заряджатися від зовнішнього джерела електроенергії"
+msgstr "Здатний заряджатися від зовнішнього джерела електроенергії"
+
+msgid "Вік:"
+msgstr "Вік:"
+
+msgid "Новий"
+msgstr "Новий"
+
+msgid "До 5-и років"
+msgstr "До 5-и років"
+
+msgid "Понад 5-и років"
+msgstr "Понад 5-и років"
+
+msgid "Б/в"
+msgstr "Б/в"
+
+msgid "Рік випуску:"
+msgstr "Рік випуску:"
+
+msgid "2009 і раніше"
+msgstr "2009 і раніше"
+
+msgid "Країна походження:"
+msgstr "Країна походження:"
+
+msgid "Не визначена"
+msgstr "Не визначена"
+
+msgid "Об'єм:"
+msgstr "Об'єм:"
+
+msgid "Валюта:"
+msgstr "Валюта:"
+
+msgid "Курс:"
+msgstr "Курс:"
+
+msgid "Вартість:"
+msgstr "Вартість:"
+
+msgid "Розрахунок"
+msgstr "Розрахунок"
+
+msgid "Очищення"
+msgstr "Очищення"
+
+# Results
+msgid "Результат розрахунку"
+msgstr "Результат розрахунку"
+
+msgid "Вартість автомобіля:"
+msgstr "Вартість автомобіля:"
+
+msgid "Мито:"
+msgstr "Мито:"
+
+msgid "ПДВ:"
+msgstr "ПДВ:"
+
+msgid "Акциз:"
+msgstr "Акциз:"
+
+msgid "Загальна сума:"
+msgstr "Загальна сума:"
+
+msgid "Для довідки (в обраній валюті):"
+msgstr "Для довідки (в обраній валюті):"
+
+# Errors and Messages
+msgid "Invalid NBU API response"
+msgstr "Невірна відповідь API НБУ"
+
+msgid "Invalid API response"
+msgstr "Невірна відповідь API"
+
+msgid "Currency not found"
+msgstr "Валюта не знайдена"
+
+msgid "Missing required parameters"
+msgstr "Відсутні обов'язкові параметри"
+
+msgid "API Error"
+msgstr "Помилка API"
