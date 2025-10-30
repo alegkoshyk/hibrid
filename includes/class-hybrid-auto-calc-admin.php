@@ -88,10 +88,12 @@ class Hybrid_Auto_Calc_Admin {
             
             <div class="card">
                 <h2><?php _e( 'Формула розрахунку', 'hybrid-auto-calc' ); ?></h2>
-                <p><strong><?php _e( 'Мито', 'hybrid-auto-calc' ); ?></strong> = Вартість × Ставка мита (залежить від об'єму)</p>
-                <p><strong><?php _e( 'Акціз', 'hybrid-auto-calc' ); ?></strong> = Акцизна база (залежить від об'єму) × Курс валюти</p>
-                <p><strong><?php _e( 'ПДВ', 'hybrid-auto-calc' ); ?></strong> = (Вартість + Мито) × 20%</p>
-                <p><strong><?php _e( 'Всього', 'hybrid-auto-calc' ); ?></strong> = Мито + Акціз + ПДВ</p>
+                <p><strong><?php _e( 'Мито', 'hybrid-auto-calc' ); ?></strong> = Вартість в грн × Ставка мита (%)</p>
+                <p><strong><?php _e( 'Акциз', 'hybrid-auto-calc' ); ?></strong> = Ставка (EUR за 1000 см³) × Обʼєм/1000 × Коефіцієнт віку (1..15) × Курс</p>
+                <p><strong><?php _e( 'ПДВ', 'hybrid-auto-calc' ); ?></strong> = (Вартість в грн + Мито + Акциз) × Ставка ПДВ (%)</p>
+                <p><strong><?php _e( 'Пенсійний фонд', 'hybrid-auto-calc' ); ?></strong> = Вартість в грн × Ставка ПФ (%)</p>
+                <p><strong><?php _e( 'Транспортний податок', 'hybrid-auto-calc' ); ?></strong> = 25 000 грн/рік, якщо авто < 5 років і вартість > 2 600 000 грн</p>
+                <p><strong><?php _e( 'Разом', 'hybrid-auto-calc' ); ?></strong> = Мито + Акциз + ПДВ + Пенсійний фонд + Транспортний податок</p>
             </div>
             
             <div class="card">

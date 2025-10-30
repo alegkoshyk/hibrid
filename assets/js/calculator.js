@@ -198,24 +198,19 @@
         $('#resultDuty').text(duty.toFixed(2) + ' грн');
         $('#resultVAT').text(vat.toFixed(2) + ' грн');
         $('#resultExcise').text(excise.toFixed(2) + ' грн');
-        // Ensure Pension row exists and fill it (robust: create container if needed)
-        if ($('.result-row.result-pension').length === 0) {
-            const $totalRow = $('.result-row.result-total');
-            const $pensionRow = $('<div class="result-row result-pension">'
-              + '<span>Пенсійний фонд:</span>'
-              + '<strong id="resultPension">0.00 грн</strong>'
-              + '</div>');
-            if ($totalRow.length) { $pensionRow.insertBefore($totalRow); } else { $('#resultBox').append($pensionRow); }
-        }
-        $('#resultPension').text(pension.toFixed(2) + ' грн');
-        // Ensure Transport row exists and fill it
-        if ($('.result-row.result-transport').length === 0) {
-            $('<div class="result-row result-transport">'
-              + '<span>Транспортний податок:</span>'
-              + '<strong id="resultTransport">0.00 грн</strong>'
-              + '</div>').insertBefore($('.result-row.result-total'));
-        }
-        $('#resultTransport').text(transport.toFixed(2) + ' грн');
+        // Ensure Pension row exists and fill it (recreate to be safe)
+        $('.result-row.result-pension').remove();
+        const $totalRow = $('.result-row.result-total');
+        $('<div class="result-row result-pension">'
+          + '<span>Пенсійний фонд:</span>'
+          + '<strong id="resultPension">'+pension.toFixed(2)+' грн</strong>'
+          + '</div>').insertBefore($totalRow.length ? $totalRow : $('#resultBox'));
+        // Ensure Transport row exists and fill it (recreate to be safe)
+        $('.result-row.result-transport').remove();
+        $('<div class="result-row result-transport">'
+          + '<span>Транспортний податок:</span>'
+          + '<strong id="resultTransport">'+transport.toFixed(2)+' грн</strong>'
+          + '</div>').insertBefore($('.result-row.result-total'));
         
         // Total
         const totalUa = parseFloat(data.payments_ua_sum || 0).toFixed(2);
@@ -225,30 +220,23 @@
         const currencyCode = $('#currency').val();
         const totalCurrency = parseFloat(data.payments_sum || 0).toFixed(2);
         $('#resultTotalCurrency').text(currencyCode + ' ' + totalCurrency);
-        // Inject rate row (if not present)
+        // Inject currency details (recreate to be safe)
         const $resultCurrencyBox = $('.result-currency');
         // Cost in selected currency
         const costOriginal = (parseFloat(data.cost_uah || 0) && parseFloat(data.exchange_rate || 0))
             ? (parseFloat(data.cost_uah) / parseFloat(data.exchange_rate))
             : 0;
-        if ($resultCurrencyBox.find('.result-cost-currency-row').length === 0) {
-            $('<div class="result-row result-cost-currency-row">'
-              + '<span>Вартість у валюті ('+currencyCode+'):</span>'
-              + '<strong>'+ (currencyCode==='UAH' ? '-' : costOriginal.toFixed(2)) +'</strong>'
-              + '</div>').insertAfter($resultCurrencyBox.find('.result-currency-title'));
-        } else {
-            $resultCurrencyBox.find('.result-cost-currency-row strong').text(currencyCode==='UAH' ? '-' : costOriginal.toFixed(2));
-            $resultCurrencyBox.find('.result-cost-currency-row span').text('Вартість у валюті ('+currencyCode+'):');
-        }
-        if ($resultCurrencyBox.find('.result-rate-row').length === 0) {
-            $('<div class="result-row result-rate-row">'
-              + '<span>Курс ('+currencyCode+'):</span>'
-              + '<strong>'+ (currencyCode==='UAH' ? '-' : (currentRate ? currentRate.toFixed(4) : '-')) +'</strong>'
-              + '</div>').insertAfter($resultCurrencyBox.find('.result-currency-title'));
-        } else {
-            $resultCurrencyBox.find('.result-rate-row strong').text(currencyCode==='UAH' ? '-' : (currentRate ? currentRate.toFixed(4) : '-'));
-            $resultCurrencyBox.find('.result-rate-row span').text('Курс ('+currencyCode+'):');
-        }
+        $resultCurrencyBox.find('.result-cost-currency-row, .result-rate-row').remove();
+        $('<div class="result-row result-cost-currency-row">'
+          + '<span>Вартість у валюті ('+currencyCode+'):</span>'
+          + '<strong>'+ (currencyCode==='UAH' ? '-' : costOriginal.toFixed(2)) +'</strong>'
+          + '</div>')
+          .insertAfter($resultCurrencyBox.find('.result-currency-title'));
+        $('<div class="result-row result-rate-row">'
+          + '<span>Курс ('+currencyCode+'):</span>'
+          + '<strong>'+ (currencyCode==='UAH' ? '-' : (currentRate ? currentRate.toFixed(4) : '-')) +'</strong>'
+          + '</div>')
+          .insertAfter($resultCurrencyBox.find('.result-currency-title'));
         // ===== Формула розрахунку (пояснення) =====
         const dutyRate = (data.payments && data.payments.duty && typeof data.payments.duty.rate !== 'undefined') ? data.payments.duty.rate : 10;
         const vatRate = (data.payments && data.payments.vat && typeof data.payments.vat.rate !== 'undefined') ? data.payments.vat.rate : 20;
@@ -275,16 +263,8 @@
           + '</div>'
         );
 
-        const $formula = $('#calcFormulaBlock');
-        if ($formula.length === 0) {
-            $resultBox.append(formulaBlock);
-        } else {
-            const $rows = $formula.find('.result-row');
-            $rows.eq(0).find('span').text(dutyLine);
-            $rows.eq(1).find('span').text(exciseLine);
-            $rows.eq(2).find('span').text(vatLine);
-            $rows.eq(3).find('span').text(totalLine);
-        }
+        $('#calcFormulaBlock').remove();
+        $resultBox.append(formulaBlock);
         
         // Show result box
         $resultBox.addClass('show');
