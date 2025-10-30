@@ -141,11 +141,15 @@ class Hybrid_Auto_Calc_API {
         $excise = $excise_base * $excise_currency_rate;
         
         // ========== ПДВ ==========
-        $vat_base = $cost_uah + $duty;
+        $vat_base = $cost_uah + $duty + $excise;
         $vat = $vat_base * 0.20; // 20% VAT
+
+        // ========== Пенсійний фонд ==========
+        $pension_rate = floatval( $tariffs['pension_fund_rate'] ?? 5 );
+        $pension_sum = $cost_uah * ( $pension_rate / 100 );
         
         // ========== ВСЬОГО ==========
-        $total_uah = $duty + $excise + $vat;
+        $total_uah = $duty + $excise + $vat + $pension_sum;
         $total_original = $total_uah / $exchange_rate;
         
         // Prepare response
@@ -173,14 +177,14 @@ class Hybrid_Auto_Calc_API {
                     'base' => $vat_base,
                     'sum_ua' => $vat,
                 ),
-            ),
-            'additional_fees' => array(
                 'pension_fund' => array(
                     'name_ua' => 'Плата до Пенсійного фонду',
-                    'rate' => 5,
-                    'sum_ua' => $total_uah * 0.05,
+                    'rate' => $pension_rate,
+                    'base' => $cost_uah,
+                    'sum_ua' => $pension_sum,
                 ),
             ),
+            'additional_fees' => array(),
             'calc_info' => array(
                 'motor_type' => $motor_type === '2' ? 'гібрид (бензин)' : 'гібрид (дизель)',
                 'age' => $age,
