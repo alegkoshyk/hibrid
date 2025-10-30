@@ -198,12 +198,14 @@
         $('#resultDuty').text(duty.toFixed(2) + ' грн');
         $('#resultVAT').text(vat.toFixed(2) + ' грн');
         $('#resultExcise').text(excise.toFixed(2) + ' грн');
-        // Ensure Pension row exists and fill it
+        // Ensure Pension row exists and fill it (robust: create container if needed)
         if ($('.result-row.result-pension').length === 0) {
-            $('<div class="result-row result-pension">'
+            const $totalRow = $('.result-row.result-total');
+            const $pensionRow = $('<div class="result-row result-pension">'
               + '<span>Пенсійний фонд:</span>'
               + '<strong id="resultPension">0.00 грн</strong>'
-              + '</div>').insertBefore($('.result-row.result-total'));
+              + '</div>');
+            if ($totalRow.length) { $pensionRow.insertBefore($totalRow); } else { $('#resultBox').append($pensionRow); }
         }
         $('#resultPension').text(pension.toFixed(2) + ' грн');
         // Ensure Transport row exists and fill it
@@ -264,7 +266,7 @@
         const totalLine = `Разом = ${dutySum.toFixed(2)} + ${exciseSum.toFixed(2)} + ${vatSum.toFixed(2)} + ${pension.toFixed(2)} + ${transport.toFixed(2)} = ${(dutySum+exciseSum+vatSum+pension+transport).toFixed(2)} грн`;
 
         const formulaBlock = (
-            '<div class="result-currency" style="margin-top:15px;">'
+            '<div id="calcFormulaBlock" class="result-currency" style="margin-top:15px;">'
           +   '<div class="result-currency-title">Формула розрахунку</div>'
           +   '<div class="result-row"><span>' + dutyLine + '</span></div>'
           +   '<div class="result-row"><span>' + exciseLine + '</span></div>'
@@ -273,10 +275,10 @@
           + '</div>'
         );
 
-        if ($resultBox.find('.result-currency .result-currency-title').filter(function(){return $(this).text()==='Формула розрахунку';}).length === 0) {
+        const $formula = $('#calcFormulaBlock');
+        if ($formula.length === 0) {
             $resultBox.append(formulaBlock);
         } else {
-            const $formula = $resultBox.find('.result-currency').filter(function(){return $(this).find('.result-currency-title').text()==='Формула розрахунку';});
             const $rows = $formula.find('.result-row');
             $rows.eq(0).find('span').text(dutyLine);
             $rows.eq(1).find('span').text(exciseLine);
